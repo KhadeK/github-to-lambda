@@ -1,0 +1,18 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+  pre_build:
+    commands:
+      - echo "Installing dependencies..."
+      - npm install
+      - npm ci
+  build:
+    commands:
+      - echo "updating lambda function..."
+      - npm run build
+      - aws lambda update-function-code --function-name github-to-lambda --zip-file://deployment_package.zip
+artifacts:
+  files:
+    - '**/*'
